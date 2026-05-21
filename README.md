@@ -106,12 +106,11 @@ This project analyzes large-scale retail data to:
 
 📸 Screenshots:
 
-images/Screenshot (375).png
-![Dashboard](images/Screenshot (375).png)
-![Dashboard](images/Screenshot (376).png)
-![Dashboard](images/Screenshot (377).png)
-![Dashboard](images/Screenshot (378).png)
-![Dashboard](images/Screenshot (379).png)
+![Dashboard](images/Screenshot(375).png)
+![Dashboard](images/Screenshot(376).png)
+![Dashboard](images/Screenshot(377).png)
+![Dashboard](images/Screenshot(378).png)
+![Dashboard](images/Screenshot(379).png)
 
 ---
 
@@ -124,7 +123,7 @@ Features:
 
 📸 Screenshots:
 
-![app](images/Screenshot (380).png)
+![app](images/Screenshot(380).png)
 
 ---
 
