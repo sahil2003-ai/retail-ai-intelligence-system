@@ -20,11 +20,16 @@ This project analyzes large-scale retail data to:
 
 ## 🚀 Project Highlights
 
-- 📊 Analyzed **₹550M+ revenue data**
-- 🤖 Built ML models with **96.27% forecasting accuracy**
-- 📦 Identified **inventory imbalance (overstock vs stockout)**
-- 💰 Performed **pricing vs competitor analysis**
-- 📈 Designed interactive dashboards for business insights
+- 📊 Analyzed **72K+ retail transactions**
+- 💰 Generated insights from **₹550M+ revenue**
+- 🤖 Built **Demand Forecasting Model (XGBoost)** with **99.98% R² Score**
+- 📈 Achieved **96.27% Business Forecast Accuracy**
+- ⚠️ Built **Inventory Risk Classification Model**
+- 📦 Identified **36K Overstock** and **14K Low Stock** products
+- 💵 Performed **Competitor Pricing Analysis**
+- 🗄️ Developed **Advanced SQL Analytics Layer** using CTEs and Window Functions
+- 📊 Created a **5-page Interactive Power BI Dashboard**
+
 ---
 
 ## 🧱 Tech Stack
@@ -32,6 +37,19 @@ This project analyzes large-scale retail data to:
 - **Python:** Pandas, NumPy, Scikit-learn
 - **Visualization:** Power BI
 - **App:** Streamlit
+  
+---
+
+## 🔄 End-to-End Project Workflow
+
+1. Data Collection & Validation
+2. Exploratory Data Analysis (EDA)
+3. Data Cleaning & Feature Engineering
+4. SQL Business Analytics
+5. Demand Forecasting (Regression)
+6. Inventory Risk Prediction (Classification)
+7. Power BI Dashboard Development
+8. Business Recommendation Generation
 
 ---
 
@@ -83,15 +101,65 @@ This project analyzes large-scale retail data to:
 
 ---
 
+## 🗄️ SQL Analytics
+
+Advanced PostgreSQL queries were used to generate business insights:
+
+- KPI Analysis
+- Inventory Analysis
+- Sales Performance Analysis
+- Pricing Optimization Analysis
+- Seasonal Revenue Analysis
+- Holiday Promotion Analysis
+- Inventory Risk Assessment
+- Forecasting Support Queries
+
+### SQL Concepts Used
+
+- Common Table Expressions (CTEs)
+- Window Functions
+- Aggregate Functions
+- CASE Statements
+- Views
+- Ranking Functions
+- Business KPI Calculations
+
+---
+
 ## 🤖 Machine Learning Models
 
 ### 🔮 Demand Forecasting (Regression)
-- Accuracy: **96.27%**
-- Captures seasonal demand trends
+
+**Model:** XGBoost Regressor
+
+- R² Score: 99.98%
+- Cross Validation Score: 99.98%
+- Forecast Accuracy KPI: 96.27%
+- Demand Gap: 372.13K Units
+
+Features Used:
+- Inventory Level
+- Price
+- Discount
+- Competitor Pricing
+- Seasonality
+- Product Category
+- Region
+
+---
 
 ### ⚠️ Inventory Risk Prediction (Classification)
-- Detects stock risk products
-- ~19% products flagged as risky
+
+Models Evaluated:
+- Logistic Regression
+- Random Forest
+- Gradient Boosting
+- XGBoost Classifier
+
+Business Objective:
+- Predict Low Stock Risk
+- Reduce Stockouts
+- Improve Inventory Planning
 
 ---
 
@@ -104,12 +172,38 @@ This project analyzes large-scale retail data to:
 - Pricing Insights
 - Forecast Visualization
 
-📸 Screenshots:
+## Dashboard Pages:
 
+### 1️⃣ Executive Overview
+- Revenue KPIs
+- Profit KPIs
+- Regional Performance
+- Category Performance
 ![Dashboard](images/Screenshot(375).png)
+
+### 2️⃣ Sales Analytics
+- Monthly Sales Trends
+- Product Performance
+- Category Revenue Analysis
 ![Dashboard](images/Screenshot(376).png)
+
+### 3️⃣ Inventory Analytics
+- Inventory Risk Analysis
+- Overstock Detection
+- Stock Turnover Monitoring
 ![Dashboard](images/Screenshot(377).png)
+
+### 4️⃣ Pricing Analytics
+- Competitor Price Comparison
+- Discount Impact Analysis
+- Profit Margin Tracking
 ![Dashboard](images/Screenshot(378).png)
+
+### 5️⃣ Demand Forecasting
+- Forecast vs Actual
+- Forecast Accuracy
+- Error Distribution
+- Seasonal Demand Trends
 ![Dashboard](images/Screenshot(379).png)
 
 ---
@@ -181,13 +275,49 @@ retail-ai-intelligence-system/
 
 ---
 
+## 🎯 Business Impact
+
+This solution helps retailers:
+
+✅ Reduce stock shortages
+
+✅ Minimize overstock inventory costs
+
+✅ Improve demand planning
+
+✅ Optimize pricing strategies
+
+✅ Increase operational efficiency
+
+✅ Support data-driven decision making
+
+---
+
 ## 🏆 Key Skills Demonstrated
 
-- Advanced SQL (CTEs, Window Functions)
-- Data Visualization (Power BI)
-- Machine Learning (Regression + Classification)
-- Business Problem Solving
-- End-to-End Project Development
+### Data Analytics
+- Advanced SQL
+- Data Cleaning
+- Exploratory Data Analysis
+- KPI Development
+
+### Data Science
+- Feature Engineering
+- Regression Modeling
+- Classification Modeling
+- Model Evaluation
+
+### Business Intelligence
+- Power BI Dashboard Development
+- DAX Measures
+- Data Modeling
+- Interactive Reporting
+
+### Business Analytics
+- Demand Forecasting
+- Inventory Optimization
+- Pricing Analytics
+- Revenue Analysis
 
 ---
 
