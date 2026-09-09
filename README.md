@@ -10,29 +10,28 @@
 ## 📌 Project Overview
 An end-to-end **Retail Analytics & AI Intelligence System** built using **SQL, Python, and Power BI**.
 
-This project analyzes 72,000+ store-product-day records to:
+This project analyzes **73,000+ daily store-product records** to:
 - Optimize sales performance
-- Detect inventory imbalance (overstock vs. stockout)
+- Improve inventory management
 - Evaluate pricing strategy
-- Predict future demand and inventory risk using Machine Learning
+- Predict demand and inventory risk using Machine Learning
 
 ---
 
 ## 🧱 Tech Stack
-- **SQL:** PostgreSQL (Advanced Queries, CTEs, Window Functions)
-- **Python:** Pandas, NumPy, Scikit-learn, XGBoost
+- **SQL:** PostgreSQL (CTEs, Window Functions, Views)
+- **Python:** Pandas, NumPy, Scikit-learn, XGBoost, SQLAlchemy, joblib
 - **Visualization:** Power BI
-- **App:** Streamlit
+- **App:** Streamlit, Plotly
 
 ---
 
 ## 🗄️ Data Architecture
-- Fact Table: `retail_inventory`
-- Dimensions (embedded in the fact table):
-  - Date *(year, month, quarter, weekday)*
-  - Product / Category
-  - Region
-  - Seasonality / Weather Condition
+- Fact Table: `retail_inventory` (`sales_data`)
+- Dimensions:
+  - `Product` (Category)
+  - `Region`
+  - `Time` (Date / Season)
 
 ✔️ Structured for scalable analytics
 
@@ -42,55 +41,59 @@ This project analyzes 72,000+ store-product-day records to:
 
 ### 🚨 Critical KPI
 - **Total Revenue:** ₹550.12M
+- **Total Units Sold:** 9.97M
 - **Estimated Profit:** ₹137.53M (~25% margin)
 
 ---
 
 ### 📦 Inventory Performance
-- Overstocked products → **36.11K**
-- Low-stock products → **14.06K**
+- Overstock → **36.11K products** (too much capital tied up)
+- Low Stock → **14.06K products** (risk of stockout)
 - Stock Turnover → **0.50** (low efficiency)
 
 ---
 
-### 📈 Sales Trend
-- Monthly revenue stable → **₹45M–₹47M**
-- Growth rate → **0.13%** (stagnant, plateaued market)
+### 🌦️ Seasonality Impact
+- Sales are consistent across months with only slight seasonal variation
+- Peak demand → **July and October**
+- Noticeable dip → **February**
 
 ---
 
-### 💰 Pricing Impact
-- Avg Price → ₹55.13
-- Avg Discount → ~10%
-- Competitive overall, but **Clothing** is underpriced relative to demand
+### ⏱️ Growth & Sales Trend
+- Monthly revenue is stable at **₹45M–₹47M**
+- Growth rate → **0.13%** (essentially flat / stagnant)
+- Revenue is evenly spread across all 4 regions → no regional dominance
 
 ---
 
-### 🔮 Demand & Category Risk
-- Forecast Accuracy → **96.27%**
-- Demand Gap → **372.13K units**
-- Furniture & Groceries → top revenue categories
+### 📦 Product / Pricing Risk
+- Top categories by revenue → **Furniture, Groceries**
+- Electronics → stable, competitive pricing
+- Clothing → underpriced relative to demand (margin left on the table)
+- Avg Price → ₹55.13 | Avg Discount → 10%
 
 ---
 
 ## 🤖 Machine Learning Model
 
 ### 🔮 Demand Forecasting — Models Compared:
-- Linear Regression
-- Random Forest
-- Gradient Boosting
-- **XGBoost ✅ (Best — R² ≈ 0.9998)**
+- Linear Regression — R² 0.9977
+- Random Forest — R² 0.9961
+- Gradient Boosting — R² 0.9974
+- **XGBoost ✅ (Best)** — R² 0.9998
 
 ### ⚠️ Inventory Risk Classification — Models Compared:
-- **Logistic Regression ✅ (Best — Accuracy ≈ 0.9999)**
-- Random Forest
-- Gradient Boosting
-- XGBoost
+- **Logistic Regression ✅ (Best)** — Accuracy 0.9999
+- Random Forest — Accuracy 0.9997
+- Gradient Boosting — Accuracy 0.9996
+- XGBoost — Accuracy 0.9990
 
 ### Performance:
-- Regression (Demand): **R² ≈ 0.9998**, CV score ≈ 0.9998
-- Classification (Risk): **Accuracy ≈ 0.9999**, precision/recall/F1 ≈ 1.00
+- Reported business forecast accuracy: **96.27%**
+- Demand Gap: **372.13K units**
 - ~19% of products flagged as at-risk (Low Stock)
+- Balanced precision & recall on risk classification (macro F1 ≈ 1.00 on this dataset)
 
 ---
 
@@ -101,7 +104,7 @@ This project analyzes 72,000+ store-product-day records to:
 - Sales Trends
 - Inventory Analysis
 - Pricing Insights
-- Forecast Visualization
+- Demand Forecast Visualization
 
 📸 Screenshots:
 
@@ -118,8 +121,9 @@ This project analyzes 72,000+ store-product-day records to:
 Features:
 - Single Prediction (Demand + Inventory Risk)
 - Bulk CSV Prediction
-- KPI Cards & Plotly Charts
-- Downloadable Predictions Report
+- KPI Summary Cards
+- Interactive Charts (Plotly)
+- Downloadable Prediction Reports
 
 📸 Screenshots:
 
@@ -178,24 +182,22 @@ retail-ai-intelligence-system/
 └── README.md                    # Main project documentation
 ```
 
-> ℹ️ No `requirements.txt` is currently in the repo. Install manually:
-> `pip install pandas numpy matplotlib seaborn scikit-learn xgboost sqlalchemy joblib streamlit plotly`
-
 ---
 
 ## 💡 Business Recommendations
-- Use ML demand forecasts to drive inventory planning and cut overstock by 20–30%
+- Use ML demand forecasts to drive inventory replenishment and cut overstock by 20–30%
 - Re-price underperforming categories (e.g. Clothing) to recover margin
-- Focus promotions on high-performing products & regions
-- Integrate the forecasting model directly into inventory operations
+- Double down on top-performing products and regions with targeted promotions
+- Wire the forecasting model directly into inventory planning for semi-automated reordering
 
 ---
 
 ## 🚀 Future Improvements
-- Hyperparameter tuning (deeper XGBoost search)
-- Cross-validation across more folds
-- Lag-based feature engineering for time-series demand
-- Real-time model deployment via API
+- Hyperparameter tuning (XGBoost)
+- Cross-validation
+- Advanced feature engineering (lag features)
+- Broader model comparison
+- Real-time deployment (API)
 
 ---
 
