@@ -47,11 +47,25 @@ Retail planning requires consistent sales/inventory metrics and carefully evalua
 
 ## 📂 Dataset
 
-The saved setup/cleaning notebook reports **73,100 rows × 15 columns**. The cleaning notebook output reports zero missing values across the listed columns and **0 duplicate rows removed**.
+I inspected both repository CSVs directly.
 
-- **Files:** `data/raw/retail_store_inventory.csv`, `data/processed/retail_cleaned.csv`
-- **Fields:** date, store_id, product_id, category, region, inventory_level, units_sold, units_ordered, demand_forecast, price, discount, weather_condition, holiday_promotion, competitor_pricing, seasonality.
-- **Data provenance:** The repository includes the dataset, but the original publisher/license is not established in the README. Verify source terms before redistribution.
+| File | Rows | Columns | Missing values | Duplicate rows |
+|---|---:|---:|---:|---:|
+| Raw `retail_store_inventory.csv` | 73,100 | 15 | 0 | 0 |
+| Processed `retail_cleaned.csv` | 72,427 | 26 | 0 | 0 |
+
+**Important discrepancy:** The processed CSV has **673 fewer rows** than the raw CSV. The current notebook output says zero duplicates were removed, so the row-count difference is not explained by the documented duplicate-removal step. Reconcile the exact filtering/export step before calling the cleaning pipeline fully validated.
+
+Raw fields include date, store/product IDs, category, region, inventory, units sold/ordered, demand forecast, price, discount, weather, promotion, competitor pricing, and seasonality. The processed file adds derived KPIs, risk labels, and date features.
+
+### Derived metric definitions
+
+- `revenue = units_sold × price`
+- `estimated_profit = revenue × 0.25` — this is a fixed 25% assumption, **not observed accounting profit**.
+- `stock_turnover = units_sold ÷ inventory_level`
+- `inventory_risk` is rule-generated from inventory and forecast thresholds, rather than an independently observed outcome.
+
+Document the original data source/license before redistribution.
 
 ## 🛠️ Tech Stack
 
@@ -113,27 +127,28 @@ Follow the actual notebook, SQL, Power BI, and app workflows in the repository. 
 
 ## 📊 Results and Insights
 
-### Results recorded in saved notebook outputs
+### Recalculated KPIs from the current processed CSV
 
-| Metric | Recorded result |
+| KPI | Result |
 |---|---:|
-| Dataset size | 73,100 rows × 15 columns |
-| Missing values | 0 in the listed columns |
-| Duplicate rows removed | 0 |
+| Processed dataset rows | 72,427 |
+| Processed dataset columns | 26 |
 | Total revenue | ₹550,118,851.12 |
-| Total profit | ₹137,529,712.78 |
-| Average units sold | 137.71 |
+| Estimated profit (25% of revenue) | ₹137,529,712.78 |
+| Average units sold per processed row | 137.71 |
 | Total inventory | 19,929,382 |
-| Demand model | XGBoost |
-| Demand model test R² | 0.999813 |
-| Demand model 5-fold CV R² | 0.999809 |
-| Inventory-risk model accuracy (saved output) | Logistic Regression: 0.999931 |
+| Average price | ₹55.13 |
+| Average discount | 10.01% |
 
-These are **saved notebook outputs**, not independently re-executed results in a clean environment. The exceptionally high model scores require a target/feature leakage audit before being presented as reliable predictive performance. In particular, inspect how the target is constructed and whether inputs such as demand forecast, inventory, demand-supply gap, or related engineered fields overlap with the target.
+The totals above were independently recalculated from the current processed CSV. Because estimated profit is defined as exactly 25% of revenue in the notebook, it should be labelled **estimated profit under the assumed 25% margin**, not actual profit.
 
-### Business interpretation
+### Model evaluation: important validity issue
 
-The saved report flags inventory imbalance and stable revenue. Treat proposed actions (such as reducing overstock) as hypotheses until verified against the data, KPI definitions, and operational constraints.
+The saved notebook reports XGBoost demand regression (R^2 = 0.999813) and 5-fold cross-validation (R^2 = 0.999809). These values are **not valid evidence of generalizable forecasting performance in the current feature setup**: the feature list includes `stock_turnover`, which is calculated as `units_sold / inventory_level`, while the target is `units_sold`. This directly leaks information from the target into an input feature.
+
+The inventory-risk classifier has a similar issue: `inventory_risk` is rule-generated from `inventory_level` and `demand_forecast`, and those same fields are used as model inputs. Its near-perfect saved accuracy measures how well the model recovers the rule, not whether it predicts independently observed future risk.
+
+**Do not advertise either saved score as validated model performance.** Remove target-derived features, define prediction time, use a chronological holdout for forecasting, compare against a baseline, and rerun evaluation before reporting model metrics.
 
 ## 🖼️ Screenshots
 
@@ -157,10 +172,11 @@ The saved report flags inventory imbalance and stable revenue. Treat proposed ac
 
 ## ⚠️ Limitations
 
-- Dataset provenance and license are not confirmed.
-- Reported KPI and model values come from saved notebook outputs and were not freshly reproduced here.
-- Near-perfect model scores require a target definition and leakage audit.
-- Business recommendations need validation against operational costs and constraints.
+- Raw and processed files differ by 673 rows; the cleaning/export pipeline needs reconciliation.
+- Estimated profit is an assumed 25% of revenue, not observed profit.
+- The saved demand model leaks the target through `stock_turnover`; the classification label is rule-derived from its input features.
+- Saved model scores have not been validated under a leakage-safe evaluation design.
+- Dataset provenance and license should be documented.
 
 ## 🚀 Future Improvements
 
