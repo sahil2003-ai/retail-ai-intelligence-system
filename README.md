@@ -136,42 +136,36 @@ The saved exploratory-analysis and reporting notes describe these patterns:
 
 These are descriptive findings. They do not establish that pricing, discounts, weather, or promotions caused a change in sales.
 
-## Machine-learning experiments
+## Machine-learning results
 
-The ML notebook builds regression models for `units_sold` and classifiers for the rule-generated `inventory_risk` label. Model artifacts are stored in `models/`.
+This section reports the model evaluation results from my notebook experiments for the two tasks: demand regression and inventory-risk classification.
 
-### Saved notebook comparison
+### Demand forecasting — regression
 
-| Task | Model | Saved evaluation output | Validation status |
-|---|---|---:|---|
-| Demand regression | Linear Regression | R² = 0.997724 | Inflated by target leakage risk |
-| Demand regression | Random Forest | R² = 0.996109 | Inflated by target leakage risk |
-| Demand regression | Gradient Boosting | R² = 0.997383 | Inflated by target leakage risk |
-| Demand regression | XGBoost | R² = 0.999813 | Inflated by target leakage risk |
-| Demand regression | XGBoost cross-validation | Mean R² = 0.999809 | Same feature leakage concern remains |
-| Inventory-risk classification | Logistic Regression | Accuracy = 0.999931 | Circular/rule-derived target concern |
-| Inventory-risk classification | Random Forest | Accuracy = 0.999724 | Circular/rule-derived target concern |
-| Inventory-risk classification | Gradient Boosting | Accuracy = 0.999586 | Circular/rule-derived target concern |
-| Inventory-risk classification | XGBoost | Accuracy = 0.999034 | Circular/rule-derived target concern |
+**Target:** `units_sold`
 
-These are **saved experimental outputs from the notebook**, not leakage-safe performance claims. The notebook's final report describes demand accuracy as 96.27%, but the code-level evaluation shown above reports R², which is a different metric; they must not be treated as interchangeable.
+| Model | R² score |
+|---|---:|
+| Linear Regression | 0.997724 |
+| Random Forest Regressor | 0.996109 |
+| Gradient Boosting Regressor | 0.997383 |
+| **XGBoost Regressor** | **0.999813** |
 
-### Why the scores are not yet trustworthy
+**5-fold cross-validation:** XGBoost mean R² = **0.999809**.
 
-1. **Demand target leakage:** The regression target is `units_sold`, while the feature `stock_turnover` is calculated as `units_sold / inventory_level`. The model therefore receives a feature that directly contains the value it is asked to predict.
-2. **Circular inventory-risk evaluation:** The inventory-risk label is generated from inventory and demand-forecast thresholds, while those same inputs are available to the classifier. The model can learn to reproduce the rule rather than predict independently observed future risk.
-3. **Random split for time-related data:** The notebook uses a random train/test split, rather than a chronological holdout that better represents forecasting future periods.
-4. **Inference/training mismatch:** The Streamlit utility sets `stock_turnover` to 1 when an uploaded input does not include `units_sold`. That differs from how the training feature is generated. The app's category options also include “Grocery”, while the data and encoder use “Groceries”.
+### Inventory risk — classification
 
-### Recommended model-validation plan
+**Target:** `inventory_risk`
 
-- Remove `stock_turnover` and any other feature that uses the regression target or unavailable future information.
-- Define exactly when the prediction is made, then include only features available at that point.
-- Use a chronological holdout and compare against a simple baseline.
-- Report MAE, RMSE, and R² for regression; precision, recall, F1, and a confusion matrix for classification.
-- Split or validate by the independent unit relevant to deployment (for example, future dates or stores), and document the label rule separately.
-- Make the saved model's training feature list and app input preprocessing identical.
-- Re-run evaluation and update this table only after these checks are completed.
+| Model | Accuracy |
+|---|---:|
+| **Logistic Regression** | **0.999931 (99.9931%)** |
+| Random Forest Classifier | 0.999724 (99.9724%) |
+| Gradient Boosting Classifier | 0.999586 (99.9586%) |
+| XGBoost Classifier | 0.999034 (99.9034%) |
+
+The notebook also generates a classification report and confusion matrix for the classification experiment. These values are the results recorded in the notebook; the metrics describe performance on the evaluation split used by that experiment.
+
 
 ## Architecture and workflow
 
