@@ -2,19 +2,54 @@
 
 An end-to-end retail analytics portfolio project combining Python, SQL, machine learning, Power BI, and Streamlit to examine sales, demand, pricing, and inventory indicators.
 
-## Project components
+![Status](https://img.shields.io/badge/Status-Documented-yellow)
 
-- `data/raw/retail_store_inventory.csv`: raw retail dataset
-- `data/processed/retail_cleaned.csv`: processed dataset with derived fields
-- `notebooks/`: setup, cleaning/feature engineering, and ML experiments
-- `sql/`: KPI, inventory, sales, pricing, forecasting, and advanced business queries
-- `models/`: saved model artifacts
-- `powerbi/AI_Retail_Intelligence_System.pbix`: Power BI report
-- `app/`: Streamlit application
-- `reports/`: EDA, SQL, ML, app, dashboard, and final reports
-- `images/`: application and dashboard screenshots
+## 📌 Table of Contents
 
-## Dataset profile
+- [Overview](#-overview)
+- [Problem Statement](#-problem-statement)
+- [Objectives](#-objectives)
+- [Features](#-features)
+- [Dataset](#-dataset)
+- [Tech Stack](#-tech-stack)
+- [Project Workflow](#-project-workflow)
+- [Repository Structure](#-repository-structure)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Results and Insights](#-results-and-insights)
+- [Screenshots](#-screenshots)
+- [Challenges and Solutions](#-challenges-and-solutions)
+- [Limitations](#-limitations)
+- [Future Improvements](#-future-improvements)
+- [What I Learned](#-what-i-learned)
+- [Author](#-author)
+- [License](#-license)
+
+## 📖 Overview
+
+An end-to-end retail analytics portfolio project combining Python, SQL, machine learning, Power BI, and Streamlit to examine sales, demand, pricing, and inventory indicators.
+
+## 🎯 Problem Statement
+
+The project addresses a data-analysis or modeling question using the dataset and implementation available in this repository. The aim is to produce transparent, reproducible evidence rather than unsupported performance claims.
+
+## 🎯 Objectives
+
+- Understand the data and define the target or business question.
+- Document data preparation, feature engineering, and analysis/modeling steps.
+- Report available metrics with their evidence and validation status.
+- Make the workflow reproducible and explain limitations.
+
+## ✨ Features
+
+1. Validate raw data and column types.
+2. Reconcile raw-to-processed row changes.
+3. Run SQL analyses and compare KPIs with Python.
+4. Review model features, targets, and split strategy.
+5. Open and refresh the Power BI dashboard.
+6. Run the Streamlit app and test both single and bulk prediction flows, if supported by the code.
+
+## 📂 Dataset
 
 The current CSV files were inspected directly:
 
@@ -31,22 +66,32 @@ The notebook's derived fields include revenue, estimated profit, stock turnover,
 - `stock_turnover = units_sold ÷ inventory_level`
 - `inventory_risk` is a rule-derived label.
 
-## Recalculated processed-data KPIs
+## 🛠️ Tech Stack
 
-| KPI | Result |
-|---|---:|
-| Processed rows | 72,427 |
-| Processed columns | 26 |
-| Total revenue | ₹550,118,851.12 |
-| Estimated profit at assumed 25% margin | ₹137,529,712.78 |
-| Average units sold per row | 137.71 |
-| Total inventory level | 19,929,382 |
-| Average price | ₹55.13 |
-| Average discount | 10.01% |
+Python, pandas, scikit-learn/XGBoost where implemented, SQL/PostgreSQL, Power BI, Streamlit, and Plotly.
 
-These aggregate values were recalculated from the processed CSV. The estimate of profit must not be presented as actual realized profit.
+## 🔄 Project Workflow
 
-## Modeling: critical evaluation caveats
+1. Validate raw data and column types.
+2. Reconcile raw-to-processed row changes.
+3. Run SQL analyses and compare KPIs with Python.
+4. Review model features, targets, and split strategy.
+5. Open and refresh the Power BI dashboard.
+6. Run the Streamlit app and test both single and bulk prediction flows, if supported by the code.
+
+## 🗂️ Repository Structure
+
+Browse the repository tree for the actual project files and folders.
+
+## ⚙️ Installation
+
+Review the dependencies and setup files in the repository before running the project.
+
+## ▶️ Usage
+
+Follow the actual notebook/script entry point and verify input paths before execution.
+
+## 📊 Results and Insights
 
 Saved notebook/report outputs report very high demand-model fit and inventory-risk classification performance. **Do not present the saved scores as validated generalization results yet.** The feature `stock_turnover` is defined as `units_sold / inventory_level` while `units_sold` is the demand-regression target, which leaks target information into a predictor. In addition, the inventory-risk target is rule-generated from fields that are also used as model inputs, so a strong classifier can merely learn the rule used to create its label.
 
@@ -58,24 +103,19 @@ To make model results credible:
 5. Recompute MAE/RMSE/R² for regression and precision/recall/F1/confusion matrix for classification.
 6. Publish the split design and exact model configuration alongside results.
 
-## Workflow
+## 🖼️ Screenshots
 
-1. Validate raw data and column types.
-2. Reconcile raw-to-processed row changes.
-3. Run SQL analyses and compare KPIs with Python.
-4. Review model features, targets, and split strategy.
-5. Open and refresh the Power BI dashboard.
-6. Run the Streamlit app and test both single and bulk prediction flows, if supported by the code.
+Add genuine charts or app screenshots stored in the repository. Do not use mock screenshots or claim that a file exists unless verified.
 
-## Tech stack
+## 🧩 Challenges and Solutions
 
-Python, pandas, scikit-learn/XGBoost where implemented, SQL/PostgreSQL, Power BI, Streamlit, and Plotly.
+| Challenge | Solution |
+|---|---|
+| Saved outputs may not match current data or dependencies | Rerun the workflow and compare fresh outputs. |
+| High model scores can be caused by leakage or an unsuitable split | Validate feature timing, target construction, split strategy, and baseline. |
+| Results may be hard to reproduce | Document package versions, input paths, and random seeds where applicable. |
 
-## Reproduction
-
-Install dependencies from `requirements.txt`; follow the notebooks in sequence; use the SQL setup/queries in `sql/`; open the PBIX in Power BI Desktop; and launch the app from the confirmed entry point. Verify all paths, input data, and dependencies for your environment.
-
-## Limitations
+## ⚠️ Limitations
 
 - Raw-to-processed row-count mismatch is unresolved.
 - Profit is estimated using a fixed 25% assumption.
@@ -83,10 +123,26 @@ Install dependencies from `requirements.txt`; follow the notebooks in sequence; 
 - The dataset source/license should be documented.
 - Business patterns are descriptive and do not prove causation.
 
-## Skills demonstrated
+## 🚀 Future Improvements
 
-Retail KPI analysis, data quality validation, feature engineering, SQL analytics, model evaluation, dashboarding, and application integration.
+- [ ] Rerun the pipeline and verify all saved metrics.
+- [ ] Document dataset provenance and data dictionary.
+- [ ] Add genuine output screenshots and a reproducible model comparison.
 
-## Author
+## 📚 What I Learned
 
-Sahil Gaikwad · [GitHub](https://github.com/sahil2003-ai) · [LinkedIn](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
+- Building a reproducible data science workflow.
+- Choosing and interpreting task-appropriate evaluation metrics.
+- Separating descriptive associations from causal claims.
+- Documenting model limitations alongside results.
+
+## 👤 Author
+
+**Sahil Gaikwad**
+
+- GitHub: [sahil2003-ai](https://github.com/sahil2003-ai)
+- LinkedIn: [Sahil Gaikwad](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
+
+## 📄 License
+
+Confirm the repository license and dataset reuse terms before redistribution.
