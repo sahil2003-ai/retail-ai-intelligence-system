@@ -1,35 +1,169 @@
 # Retail AI Intelligence System
 
-A retail analytics project combining SQL, Python, machine learning, Power BI, and Streamlit to explore sales, demand, and inventory risk.
+> Retail analytics project combining SQL, Python, machine learning, Power BI, and Streamlit to explore sales, demand, and inventory risk.
 
-## Dashboard and application screenshots
+![Status](https://img.shields.io/badge/Status-Portfolio--Project-blue)
 
-The repository contains six screenshots. The images below use the files already uploaded in `images/`.
+## 📌 Table of Contents
 
-| Screenshot 1 | Screenshot 2 |
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Objectives](#objectives)
+- [Features](#features)
+- [Dataset](#dataset)
+- [Tech Stack](#tech-stack)
+- [Project Workflow](#project-workflow)
+- [Repository Structure](#repository-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Results and Insights](#results-and-insights)
+- [Screenshots](#screenshots)
+- [Challenges and Solutions](#challenges-and-solutions)
+- [Limitations](#limitations)
+- [Future Improvements](#future-improvements)
+- [What I Learned](#what-i-learned)
+- [Author](#author)
+- [License](#license)
+
+## 📖 Overview
+
+Retail analytics project combining SQL, Python, machine learning, Power BI, and Streamlit to explore sales, demand, and inventory risk. This README documents the intended workflow and the files available in the repository. Verify all outputs against the current code and data before using them as evidence.
+
+## 🎯 Problem Statement
+
+Retail planning requires consistent sales/inventory metrics and carefully evaluated forecasts or risk indicators.
+
+## 🎯 Objectives
+
+- Explore retail sales and inventory patterns.
+- Define prediction targets and evaluate models correctly.
+- Present results through dashboards and an application.
+
+## ✨ Features
+
+- SQL, data, notebook, model, dashboard, and app folders.
+- Six existing project screenshots.
+- Analytics and ML workflow.
+
+## 📂 Dataset
+
+Inspect data/ and sql/ for data provenance, grain, schema, and whether the data is synthetic or externally sourced.
+
+- **Privacy and licensing:** Check source terms and avoid publishing personal, sensitive, or restricted data.
+- **Preprocessing:** Follow the actual SQL/notebook/report implementation; do not assume cleaning steps or row counts that have not been verified.
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
 |---|---|
-| ![Retail dashboard screenshot 1](images/Screenshot(375).png) | ![Retail dashboard screenshot 2](images/Screenshot(376).png) |
-| ![Retail dashboard screenshot 3](images/Screenshot(377).png) | ![Retail dashboard screenshot 4](images/Screenshot(378).png) |
-| ![Retail dashboard screenshot 5](images/Screenshot(379).png) | ![Retail dashboard screenshot 6](images/Screenshot(380).png) |
+| SQL/PostgreSQL | Data preparation and querying |
+| Python/pandas | EDA and feature preparation |
+| scikit-learn/XGBoost | Models where implemented |
+| Power BI | Reporting |
+| Streamlit/Plotly | Application and charts |
 
-## Step-by-step workflow
+## 🔄 Project Workflow
 
-1. **Inspect repository structure** — review `data/`, `sql/`, `notebooks/`, `models/`, `powerbi/`, `app/`, and `reports/`.
-2. **Understand the dataset** — confirm the data source, date range, grain (for example, store-product-day), columns, and whether data is synthetic or externally sourced.
-3. **Validate data quality** — check duplicates, missing dates, negative/zero sales, outliers, and product/store coverage.
-4. **Prepare SQL tables** — inspect the schema and SQL files, then load data using the documented process.
-5. **Perform EDA** — explore sales, revenue, units, seasonality, regions, and inventory indicators in the notebooks.
-6. **Define targets** — specify exactly what is being forecast or classified and when a prediction would be made.
-7. **Train and evaluate models** — use a chronological split for demand forecasting, compare against simple baselines, and check for leakage.
-8. **Validate business metrics** — reconcile sales, revenue, profit, overstock, and low-stock calculations with source data.
-9. **Review Power BI and Streamlit** — confirm filters, measures, data connections, and model inputs/outputs.
-10. **Document findings** — publish only reproducible results, with the evaluation window and limitations.
+1. Inspect data/, sql/, notebooks/, models/, powerbi/, app/, reports/, and images/.
+2. Confirm dataset source, grain, time range, and synthetic/external status.
+3. Check duplicates, missing dates, invalid sales, outliers, and inventory fields.
+4. Review SQL schema and prepare tables using actual repository scripts.
+5. Run notebooks to explore sales, demand, seasonality, and inventory indicators.
+6. Define forecast/classification targets and prediction timing.
+7. Use chronological splits for forecasting, compare baselines, and check leakage.
+8. Reconcile dashboard KPIs against source data and notebook outputs.
+9. Inspect the app entry point and confirm model inputs/outputs.
+10. Document only reproducible metrics and business findings.
 
-## Tools
-SQL/PostgreSQL, Python, pandas, scikit-learn, XGBoost, Power BI, Streamlit, Plotly.
+## 🗂️ Repository Structure
 
-## Results and limitations
-Previously reported business totals and model scores must be reproducible from the repository before being treated as verified. Near-perfect metrics require careful leakage and target-definition checks.
+```text
+retail-ai-intelligence-system/
+├── app/
+├── data/
+├── images/
+├── models/
+├── notebooks/
+├── powerbi/
+├── reports/
+└── sql/
+└── README.md
+```
 
-## Next improvements
-Add dataset provenance, exact setup commands, a model card, and a verified results table.
+The list above highlights known project files and folders; inspect the repository for the complete current structure.
+
+## ⚙️ Installation
+
+### Prerequisites
+
+- Install the tools listed in the Tech Stack that apply to this project.
+- For Python projects, use a Python version compatible with the dependencies actually imported by the code.
+- For Power BI projects, use Power BI Desktop.
+
+### Setup
+
+Inspect the app/ and notebook folders for actual entry points and dependencies. Create an environment and install the project requirements if a dependency file is present; verify database setup in SQL scripts.
+
+Do not run generic commands that do not match the files in this repository. Confirm the data paths, database dialect, and package versions before execution.
+
+## ▶️ Usage
+
+Follow the actual notebook, SQL, Power BI, and app workflows in the repository. Confirm the app entry point before using a run command.
+
+## 📊 Results and Insights
+
+### Key Findings
+
+Previously reported near-perfect model scores need independent reproduction. Add verified results, baselines, and evaluation windows only after validation.
+
+### Evaluation
+
+For analytics projects, reconcile key totals and document metric definitions. For ML projects, report the baseline, split strategy, relevant metrics, and held-out evaluation results. Do not include unverified scores or business impact claims.
+
+## 🖼️ Screenshots
+
+![Retail project screenshot 1](images/Screenshot(375).png)
+
+![Retail project screenshot 2](images/Screenshot(376).png)
+
+![Retail project screenshot 3](images/Screenshot(377).png)
+
+![Retail project screenshot 4](images/Screenshot(378).png)
+
+![Retail project screenshot 5](images/Screenshot(379).png)
+
+![Retail project screenshot 6](images/Screenshot(380).png)
+
+## 🧩 Challenges and Solutions
+
+| Challenge | Solution / validation approach |
+|---|---|
+| Forecasting and inventory targets may leak information | Define prediction time and validate using chronological splits and baselines. |
+
+## ⚠️ Limitations
+
+- Near-perfect metrics may indicate leakage or target construction issues.
+- Data source and model metrics need verification.
+- Risk indicators should not be treated as guarantees.
+
+## 🚀 Future Improvements
+
+- [ ] Add reproducible setup commands and data dictionary.
+- [ ] Validate reported model results and publish a model card.
+- [ ] Document dashboard KPIs and data provenance.
+
+## 📚 What I Learned
+
+- Combining analytics, modelling, and dashboards.
+- Importance of leakage checks and reproducible evaluation.
+
+## 👤 Author
+
+**Sahil Gaikwad**
+
+- GitHub: [sahil2003-ai](https://github.com/sahil2003-ai)
+- LinkedIn: [Sahil Gaikwad](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
+
+## 📄 License
+
+Check data provenance and repository licensing.
