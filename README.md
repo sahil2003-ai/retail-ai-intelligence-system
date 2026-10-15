@@ -47,10 +47,11 @@ Retail planning requires consistent sales/inventory metrics and carefully evalua
 
 ## 📂 Dataset
 
-Inspect data/ and sql/ for data provenance, grain, schema, and whether the data is synthetic or externally sourced.
+The saved setup/cleaning notebook reports **73,100 rows × 15 columns**. The cleaning notebook output reports zero missing values across the listed columns and **0 duplicate rows removed**.
 
-- **Privacy and licensing:** Check source terms and avoid publishing personal, sensitive, or restricted data.
-- **Preprocessing:** Follow the actual SQL/notebook/report implementation; do not assume cleaning steps or row counts that have not been verified.
+- **Files:** `data/raw/retail_store_inventory.csv`, `data/processed/retail_cleaned.csv`
+- **Fields:** date, store_id, product_id, category, region, inventory_level, units_sold, units_ordered, demand_forecast, price, discount, weather_condition, holiday_promotion, competitor_pricing, seasonality.
+- **Data provenance:** The repository includes the dataset, but the original publisher/license is not established in the README. Verify source terms before redistribution.
 
 ## 🛠️ Tech Stack
 
@@ -112,13 +113,27 @@ Follow the actual notebook, SQL, Power BI, and app workflows in the repository. 
 
 ## 📊 Results and Insights
 
-### Key Findings
+### Results recorded in saved notebook outputs
 
-Previously reported near-perfect model scores need independent reproduction. Add verified results, baselines, and evaluation windows only after validation.
+| Metric | Recorded result |
+|---|---:|
+| Dataset size | 73,100 rows × 15 columns |
+| Missing values | 0 in the listed columns |
+| Duplicate rows removed | 0 |
+| Total revenue | ₹550,118,851.12 |
+| Total profit | ₹137,529,712.78 |
+| Average units sold | 137.71 |
+| Total inventory | 19,929,382 |
+| Demand model | XGBoost |
+| Demand model test R² | 0.999813 |
+| Demand model 5-fold CV R² | 0.999809 |
+| Inventory-risk model accuracy (saved output) | Logistic Regression: 0.999931 |
 
-### Evaluation
+These are **saved notebook outputs**, not independently re-executed results in a clean environment. The exceptionally high model scores require a target/feature leakage audit before being presented as reliable predictive performance. In particular, inspect how the target is constructed and whether inputs such as demand forecast, inventory, demand-supply gap, or related engineered fields overlap with the target.
 
-For analytics projects, reconcile key totals and document metric definitions. For ML projects, report the baseline, split strategy, relevant metrics, and held-out evaluation results. Do not include unverified scores or business impact claims.
+### Business interpretation
+
+The saved report flags inventory imbalance and stable revenue. Treat proposed actions (such as reducing overstock) as hypotheses until verified against the data, KPI definitions, and operational constraints.
 
 ## 🖼️ Screenshots
 
@@ -142,9 +157,10 @@ For analytics projects, reconcile key totals and document metric definitions. Fo
 
 ## ⚠️ Limitations
 
-- Near-perfect metrics may indicate leakage or target construction issues.
-- Data source and model metrics need verification.
-- Risk indicators should not be treated as guarantees.
+- Dataset provenance and license are not confirmed.
+- Reported KPI and model values come from saved notebook outputs and were not freshly reproduced here.
+- Near-perfect model scores require a target definition and leakage audit.
+- Business recommendations need validation against operational costs and constraints.
 
 ## 🚀 Future Improvements
 
