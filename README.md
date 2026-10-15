@@ -1,38 +1,35 @@
 # Retail AI Intelligence System
 
-An end-to-end retail analytics portfolio project combining SQL, Python, machine learning, and dashboards to explore sales performance, demand forecasting, and inventory risk.
+A retail analytics project combining SQL, Python, machine learning, Power BI, and Streamlit to explore sales, demand, and inventory risk.
 
-## Business Objective
-Investigate retail sales and inventory patterns and demonstrate how analytical reporting and predictive models can support planning questions.
+## Dashboard and application screenshots
 
-## Technology
-- **SQL:** PostgreSQL, including CTEs and window functions as documented
-- **Python:** pandas, NumPy, scikit-learn, XGBoost, SQLAlchemy, joblib
-- **Visualization/app:** Power BI, Streamlit, Plotly
+The repository contains six screenshots. The images below use the files already uploaded in `images/`.
 
-## Data Architecture
-The README describes a retail inventory/sales fact table and product, region, and time dimensions. Confirm the actual schema and data-generation process in the repository.
+| Screenshot 1 | Screenshot 2 |
+|---|---|
+| ![Retail dashboard screenshot 1](images/Screenshot(375).png) | ![Retail dashboard screenshot 2](images/Screenshot(376).png) |
+| ![Retail dashboard screenshot 3](images/Screenshot(377).png) | ![Retail dashboard screenshot 4](images/Screenshot(378).png) |
+| ![Retail dashboard screenshot 5](images/Screenshot(379).png) | ![Retail dashboard screenshot 6](images/Screenshot(380).png) |
 
-## Analysis Areas
-- Sales, revenue, units, and profitability summaries
-- Product and regional comparisons
-- Seasonality and demand trends
-- Overstock and low-stock indicators
-- Forecasting and inventory-risk classification experiments
+## Step-by-step workflow
 
-## Model Results
-The current README reports very high model scores, including near-perfect values for some tasks. These should be considered **unverified until independently reproduced**. Such results can arise from target leakage, a target derived directly from input features, duplicated rows, or an easy synthetic dataset.
+1. **Inspect repository structure** — review `data/`, `sql/`, `notebooks/`, `models/`, `powerbi/`, `app/`, and `reports/`.
+2. **Understand the dataset** — confirm the data source, date range, grain (for example, store-product-day), columns, and whether data is synthetic or externally sourced.
+3. **Validate data quality** — check duplicates, missing dates, negative/zero sales, outliers, and product/store coverage.
+4. **Prepare SQL tables** — inspect the schema and SQL files, then load data using the documented process.
+5. **Perform EDA** — explore sales, revenue, units, seasonality, regions, and inventory indicators in the notebooks.
+6. **Define targets** — specify exactly what is being forecast or classified and when a prediction would be made.
+7. **Train and evaluate models** — use a chronological split for demand forecasting, compare against simple baselines, and check for leakage.
+8. **Validate business metrics** — reconcile sales, revenue, profit, overstock, and low-stock calculations with source data.
+9. **Review Power BI and Streamlit** — confirm filters, measures, data connections, and model inputs/outputs.
+10. **Document findings** — publish only reproducible results, with the evaluation window and limitations.
 
-Before presenting metrics:
-1. Define the target and the point at which predictions would be made.
-2. Split chronologically or by appropriate entity where needed.
-3. Fit preprocessing only on training data.
-4. Compare against simple baselines.
-5. Report held-out metrics and error analysis.
-6. Explain whether the data is synthetic, simulated, or externally sourced.
+## Tools
+SQL/PostgreSQL, Python, pandas, scikit-learn, XGBoost, Power BI, Streamlit, Plotly.
 
-## How to Review
-Inspect the SQL schema, data-generation/cleaning code, notebooks, dependency file, dashboards, and Streamlit entry point before following setup commands.
+## Results and limitations
+Previously reported business totals and model scores must be reproducible from the repository before being treated as verified. Near-perfect metrics require careful leakage and target-definition checks.
 
-## Recommended Improvements
-Add dataset provenance, a reproducible end-to-end command, verified findings, dashboard screenshots, and a model card with target definition and limitations. Avoid calling a score “accuracy” unless its metric and evaluation set are clear.
+## Next improvements
+Add dataset provenance, exact setup commands, a model card, and a verified results table.
