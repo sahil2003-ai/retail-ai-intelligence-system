@@ -1,148 +1,376 @@
 # Retail AI Intelligence System
 
-An end-to-end retail analytics portfolio project combining Python, SQL, machine learning, Power BI, and Streamlit to examine sales, demand, pricing, and inventory indicators.
+An end-to-end retail analytics and machine-learning portfolio project that brings together **Python, SQL (PostgreSQL), Power BI, and Streamlit** to explore sales performance, pricing, inventory health, and demand forecasting.
 
-![Status](https://img.shields.io/badge/Status-Documented-yellow)
+The repository includes the source datasets, data-cleaning and ML notebooks, SQL analysis scripts, saved model artifacts, a Power BI report, a Streamlit prediction app, analysis notes, and screenshots.
 
-## 📌 Table of Contents
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-Analytics-blue?logo=python" alt="Python analytics">
+  <img src="https://img.shields.io/badge/SQL-PostgreSQL-336791?logo=postgresql" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/BI-Power%20BI-F2C811?logo=powerbi" alt="Power BI">
+  <img src="https://img.shields.io/badge/App-Streamlit-FF4B4B?logo=streamlit" alt="Streamlit">
+  <img src="https://img.shields.io/badge/ML-Experimental-orange" alt="Experimental machine learning">
+</p>
 
-- [Overview](#-overview)
-- [Problem Statement](#-problem-statement)
-- [Objectives](#-objectives)
-- [Features](#-features)
-- [Dataset](#-dataset)
-- [Tech Stack](#-tech-stack)
-- [Project Workflow](#-project-workflow)
-- [Repository Structure](#-repository-structure)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Results and Insights](#-results-and-insights)
-- [Screenshots](#-screenshots)
-- [Challenges and Solutions](#-challenges-and-solutions)
-- [Limitations](#-limitations)
-- [Future Improvements](#-future-improvements)
-- [What I Learned](#-what-i-learned)
-- [Author](#-author)
-- [License](#-license)
+> **Important model-validation note:** Very high model scores are present in the saved notebook outputs, but they are not reliable estimates of real-world performance yet. The demand model uses a feature derived directly from the prediction target, and inventory-risk labels are generated from fields also supplied to the classifier. Details and recommended fixes are documented below.
 
-## 📖 Overview
+## Contents
 
-An end-to-end retail analytics portfolio project combining Python, SQL, machine learning, Power BI, and Streamlit to examine sales, demand, pricing, and inventory indicators.
+- [Project overview](#project-overview)
+- [Business questions](#business-questions)
+- [Dataset and data quality](#dataset-and-data-quality)
+- [Verified data results](#verified-data-results)
+- [Business insights](#business-insights)
+- [Machine-learning experiments](#machine-learning-experiments)
+- [Architecture and workflow](#architecture-and-workflow)
+- [Technology stack](#technology-stack)
+- [Repository structure](#repository-structure)
+- [Screenshots](#screenshots)
+- [Run the Streamlit app](#run-the-streamlit-app)
+- [Run the notebooks and SQL](#run-the-notebooks-and-sql)
+- [Limitations and next steps](#limitations-and-next-steps)
+- [Skills demonstrated](#skills-demonstrated)
+- [Author and license](#author-and-license)
 
-## 🎯 Problem Statement
+## Project overview
 
-The project addresses a data-analysis or modeling question using the dataset and implementation available in this repository. The aim is to produce transparent, reproducible evidence rather than unsupported performance claims.
+Retail teams need to understand how sales, prices, discounts, demand forecasts, and available inventory relate to one another. This project organizes those questions into an analytics workflow with reusable data preparation, SQL queries, a BI report, and experimental prediction models.
 
-## 🎯 Objectives
+The project is intended as a **portfolio and learning system**, not a validated production decision engine. The metrics below distinguish calculations documented from the current processed CSV from legacy report outputs and experimental model scores.
 
-- Understand the data and define the target or business question.
-- Document data preparation, feature engineering, and analysis/modeling steps.
-- Report available metrics with their evidence and validation status.
-- Make the workflow reproducible and explain limitations.
+## Business questions
 
-## ✨ Features
+- How much revenue is generated, and how does it vary by product category and region?
+- What do inventory levels, units sold, and demand forecasts suggest about potential stock pressure?
+- How do company prices compare with competitor prices, and how do discounts relate to sales?
+- Which products and categories rank highest by revenue?
+- Can the available features support a demand prediction or a rule-based inventory-risk classification after leakage-safe validation?
 
-1. Validate raw data and column types.
-2. Reconcile raw-to-processed row changes.
-3. Run SQL analyses and compare KPIs with Python.
-4. Review model features, targets, and split strategy.
-5. Open and refresh the Power BI dashboard.
-6. Run the Streamlit app and test both single and bulk prediction flows, if supported by the code.
+## Dataset and data quality
 
-## 📂 Dataset
+Two CSV files are included in the repository:
 
-The current CSV files were inspected directly:
-
-| File | Rows | Columns | Missing cells | Duplicate rows |
+| Dataset | Rows | Columns | Missing cells | Duplicate rows |
 |---|---:|---:|---:|---:|
-| Raw retail dataset | 73,100 | 15 | 0 | 0 |
-| Processed retail dataset | 72,427 | 26 | 0 | 0 |
+| Raw: `data/raw/retail_store_inventory.csv` | 73,100 | 15 | 0 | 0 |
+| Processed: `data/processed/retail_cleaned.csv` | 72,427 | 26 | 0 | 0 |
 
-**Data-quality issue:** The processed file has 673 fewer rows than the raw file. The current notebook narrative reports zero duplicates removed, so the row-count difference needs to be traced to a filter, failed transformation, or export step.
+### Why are there 673 fewer processed rows?
 
-The notebook's derived fields include revenue, estimated profit, stock turnover, risk labels, and date features. In particular:
-- `revenue = units_sold × price`
-- `estimated_profit = revenue × 0.25` is a fixed margin assumption, not observed accounting profit.
-- `stock_turnover = units_sold ÷ inventory_level`
-- `inventory_risk` is a rule-derived label.
+The cleaning notebook removes rows where `demand_forecast < 0`. The raw data contains negative demand-forecast values (the observed minimum in the notebook summary is -9.99), so **673 rows are filtered out by this rule**. The notebook separately reports that it removed zero duplicate rows. This explains the raw-to-processed row-count difference in the committed workflow.
 
-## 🛠️ Tech Stack
+### Raw dataset fields
 
-Python, pandas, scikit-learn/XGBoost where implemented, SQL/PostgreSQL, Power BI, Streamlit, and Plotly.
+The 15 source fields cover:
 
-## 🔄 Project Workflow
+- **Time and identifiers:** Date, Store ID, Product ID
+- **Retail dimensions:** Category, Region, Seasonality
+- **Sales and stock:** Inventory Level, Units Sold, Units Ordered, Demand Forecast
+- **Price and promotion:** Price, Discount, Competitor Pricing, Holiday/Promotion
+- **Context:** Weather Condition
 
-1. Validate raw data and column types.
-2. Reconcile raw-to-processed row changes.
-3. Run SQL analyses and compare KPIs with Python.
-4. Review model features, targets, and split strategy.
-5. Open and refresh the Power BI dashboard.
-6. Run the Streamlit app and test both single and bulk prediction flows, if supported by the code.
+### Engineered fields in the processed file
 
-## 🗂️ Repository Structure
+The notebook adds fields such as Revenue, Estimated Profit, Demand Gap, Price Difference, Stock Turnover, Inventory Risk, Year, Month, Day, Weekday, and Quarter.
 
-Browse the repository tree for the actual project files and folders.
+| Derived field | Project definition | Interpretation |
+|---|---|---|
+| Revenue | Units Sold × Price | Calculated sales value using the dataset's price and units |
+| Estimated Profit | Revenue × 0.25 | Assumes a 25% margin; **not observed accounting profit** |
+| Demand Gap | Demand Forecast − Units Sold | Positive values indicate forecast above observed units sold |
+| Price Difference | Price − Competitor Pricing | Positive means the listed price is above competitor pricing |
+| Stock Turnover | Units Sold ÷ Inventory Level | A simple proxy used in this project, not a standard period-normalized inventory-turnover KPI |
+| Inventory Risk | Rule-based category | The notebook's later rule assigns Critical Stock, Low Stock, or Normal from inventory and forecast thresholds |
 
-## ⚙️ Installation
+## Verified data results
 
-Review the dependencies and setup files in the repository before running the project.
+The following KPIs are documented as recalculated from the current processed CSV in `reports/sql_analysis.md` and the data-cleaning notebook.
 
-## ▶️ Usage
+| KPI | Result | Notes |
+|---|---:|---|
+| Total revenue | **₹550,118,851.12** | Sum of calculated revenue |
+| Estimated profit | **₹137,529,712.78** | Uses the assumed fixed 25% margin |
+| Average units sold per processed row | **137.71** | Mean of `units_sold` |
+| Total inventory level | **19,929,382** | Sum of row-level inventory values |
+| Average listed price | **₹55.13** | Mean of `price` |
+| Average discount | **10.01%** | Mean of the source discount field |
+| Processed rows | **72,427** | After excluding negative demand forecasts |
 
-Follow the actual notebook/script entry point and verify input paths before execution.
+### Revenue by category
 
-## 📊 Results and Insights
+| Category | Revenue |
+|---|---:|
+| Furniture | ₹111,488,901.57 |
+| Groceries | ₹110,962,070.30 |
+| Clothing | ₹109,631,718.66 |
+| Toys | ₹109,617,729.33 |
+| Electronics | ₹108,418,431.26 |
 
-Saved notebook/report outputs report very high demand-model fit and inventory-risk classification performance. **Do not present the saved scores as validated generalization results yet.** The feature `stock_turnover` is defined as `units_sold / inventory_level` while `units_sold` is the demand-regression target, which leaks target information into a predictor. In addition, the inventory-risk target is rule-generated from fields that are also used as model inputs, so a strong classifier can merely learn the rule used to create its label.
+**What this suggests:** Revenue is relatively evenly spread across the five categories in the processed data. Furniture ranks first by total revenue in the saved analysis, while Electronics ranks fifth; the difference should be interpreted alongside margin assumptions, units, and pricing rather than as a profitability ranking.
 
-To make model results credible:
-1. Remove target-derived or post-outcome features.
-2. Define the prediction timestamp and exclude information unavailable then.
-3. Use a chronological holdout for time-dependent demand prediction.
-4. Compare with simple baselines.
-5. Recompute MAE/RMSE/R² for regression and precision/recall/F1/confusion matrix for classification.
-6. Publish the split design and exact model configuration alongside results.
+### Revenue by region
 
-## 🖼️ Screenshots
+| Region | Revenue |
+|---|---:|
+| East | ₹138,678,800 (approx.) |
+| South | ₹138,456,100 (approx.) |
+| North | ₹137,232,000 (approx.) |
+| West | ₹135,752,100 (approx.) |
 
-Add genuine charts or app screenshots stored in the repository. Do not use mock screenshots or claim that a file exists unless verified.
+Regional totals are rounded from the notebook's displayed analysis outputs. The spread is relatively narrow, so the saved results do not show one region overwhelmingly dominating revenue.
 
-## 🧩 Challenges and Solutions
+### Additional figures in the project report
 
-| Challenge | Solution |
-|---|---|
-| Saved outputs may not match current data or dependencies | Rerun the workflow and compare fresh outputs. |
-| High model scores can be caused by leakage or an unsuitable split | Validate feature timing, target construction, split strategy, and baseline. |
-| Results may be hard to reproduce | Document package versions, input paths, and random seeds where applicable. |
+The legacy final report also records approximately **9.97 million units sold**, **14.06K low-stock rows**, **36.11K overstock rows**, a **372.13K-unit demand gap**, and monthly revenue in the **₹45M–₹47M** range. These are report-level outputs rather than independently revalidated KPIs in the current README; refresh the relevant report/dashboard calculations before using them in a business presentation. Risk counts in particular depend on the exact threshold definitions used.
 
-## ⚠️ Limitations
+## Business insights
 
-- Raw-to-processed row-count mismatch is unresolved.
-- Profit is estimated using a fixed 25% assumption.
-- Saved model metrics are not leakage-safe validation evidence.
-- The dataset source/license should be documented.
-- Business patterns are descriptive and do not prove causation.
+The saved exploratory-analysis and reporting notes describe these patterns:
 
-## 🚀 Future Improvements
+- **Category balance:** The five categories contribute broadly similar revenue totals.
+- **Regional balance:** East and South lead the saved regional summary by a small margin; West is lowest among the four listed regions.
+- **Inventory review:** The reports highlight potential overstock/low-stock imbalance and recommend reviewing stock against demand rather than relying on inventory totals alone.
+- **Pricing review:** The SQL scripts compare company and competitor prices, price differences, discounts, and demand-related fields.
+- **Seasonality:** The EDA notes call out July and October as peak-demand periods and February as a softer period. Validate the pattern against refreshed monthly summaries before treating it as a durable seasonal effect.
+- **Profit interpretation:** Estimated profit is calculated using an assumed 25% margin, so it should not be presented as finance-approved profit or margin analysis.
 
-- [ ] Rerun the pipeline and verify all saved metrics.
-- [ ] Document dataset provenance and data dictionary.
-- [ ] Add genuine output screenshots and a reproducible model comparison.
+These are descriptive findings. They do not establish that pricing, discounts, weather, or promotions caused a change in sales.
 
-## 📚 What I Learned
+## Machine-learning experiments
 
-- Building a reproducible data science workflow.
-- Choosing and interpreting task-appropriate evaluation metrics.
-- Separating descriptive associations from causal claims.
-- Documenting model limitations alongside results.
+The ML notebook builds regression models for `units_sold` and classifiers for the rule-generated `inventory_risk` label. Model artifacts are stored in `models/`.
 
-## 👤 Author
+### Saved notebook comparison
+
+| Task | Model | Saved evaluation output | Validation status |
+|---|---|---:|---|
+| Demand regression | Linear Regression | R² = 0.997724 | Inflated by target leakage risk |
+| Demand regression | Random Forest | R² = 0.996109 | Inflated by target leakage risk |
+| Demand regression | Gradient Boosting | R² = 0.997383 | Inflated by target leakage risk |
+| Demand regression | XGBoost | R² = 0.999813 | Inflated by target leakage risk |
+| Demand regression | XGBoost cross-validation | Mean R² = 0.999809 | Same feature leakage concern remains |
+| Inventory-risk classification | Logistic Regression | Accuracy = 0.999931 | Circular/rule-derived target concern |
+| Inventory-risk classification | Random Forest | Accuracy = 0.999724 | Circular/rule-derived target concern |
+| Inventory-risk classification | Gradient Boosting | Accuracy = 0.999586 | Circular/rule-derived target concern |
+| Inventory-risk classification | XGBoost | Accuracy = 0.999034 | Circular/rule-derived target concern |
+
+These are **saved experimental outputs from the notebook**, not leakage-safe performance claims. The notebook's final report describes demand accuracy as 96.27%, but the code-level evaluation shown above reports R², which is a different metric; they must not be treated as interchangeable.
+
+### Why the scores are not yet trustworthy
+
+1. **Demand target leakage:** The regression target is `units_sold`, while the feature `stock_turnover` is calculated as `units_sold / inventory_level`. The model therefore receives a feature that directly contains the value it is asked to predict.
+2. **Circular inventory-risk evaluation:** The inventory-risk label is generated from inventory and demand-forecast thresholds, while those same inputs are available to the classifier. The model can learn to reproduce the rule rather than predict independently observed future risk.
+3. **Random split for time-related data:** The notebook uses a random train/test split, rather than a chronological holdout that better represents forecasting future periods.
+4. **Inference/training mismatch:** The Streamlit utility sets `stock_turnover` to 1 when an uploaded input does not include `units_sold`. That differs from how the training feature is generated. The app's category options also include “Grocery”, while the data and encoder use “Groceries”.
+
+### Recommended model-validation plan
+
+- Remove `stock_turnover` and any other feature that uses the regression target or unavailable future information.
+- Define exactly when the prediction is made, then include only features available at that point.
+- Use a chronological holdout and compare against a simple baseline.
+- Report MAE, RMSE, and R² for regression; precision, recall, F1, and a confusion matrix for classification.
+- Split or validate by the independent unit relevant to deployment (for example, future dates or stores), and document the label rule separately.
+- Make the saved model's training feature list and app input preprocessing identical.
+- Re-run evaluation and update this table only after these checks are completed.
+
+## Architecture and workflow
+
+1. **Load and inspect** the raw retail inventory CSV with pandas.
+2. **Clean and transform** column names, parse dates, inspect missing values and duplicates, filter negative demand forecasts, and engineer business fields.
+3. **Calculate KPIs** and explore category, region, pricing, inventory, and time-related patterns.
+4. **Run SQL analysis** against the `retail_inventory` PostgreSQL table for KPI, sales, inventory, pricing, forecasting, and advanced business queries.
+5. **Train experimental ML models** and save artifacts for demand regression and inventory-risk classification.
+6. **Explore results** through the Power BI report and the Streamlit prediction interface.
+
+## Technology stack
+
+- **Python:** pandas, NumPy, scikit-learn, XGBoost, joblib
+- **Data analysis and plots:** Matplotlib, Seaborn, Plotly
+- **Database and querying:** PostgreSQL, SQLAlchemy, SQL
+- **Business intelligence:** Power BI Desktop (`.pbix`)
+- **Interactive application:** Streamlit
+- **Data formats:** CSV, Jupyter Notebook, Markdown
+
+## Repository structure
+
+```text
+retail-ai-intelligence-system/
+├── app/
+│   ├── app.py
+│   └── utils.py
+├── data/
+│   ├── raw/
+│   │   └── retail_store_inventory.csv
+│   └── processed/
+│       └── retail_cleaned.csv
+├── images/
+│   ├── Screenshot(375).png
+│   ├── Screenshot(376).png
+│   ├── Screenshot(377).png
+│   ├── Screenshot(378).png
+│   ├── Screenshot(379).png
+│   └── Screenshot(380).png
+├── models/
+│   ├── best_demand_model.pkl
+│   ├── best_risk_model.pkl
+│   └── label_encoders.pkl
+├── notebooks/
+│   ├── 01_project_setup.ipynb
+│   ├── 02_data_cleaning_feature_engineering.ipynb
+│   └── 03_ml_modeling.ipynb
+├── powerbi/
+│   └── AI_Retail_Intelligence_System.pbix
+├── reports/
+│   ├── app_explanation.md
+│   ├── dashboard_explanation.md
+│   ├── eda_insights.md
+│   ├── final_report.md
+│   ├── ml_insights.md
+│   └── sql_analysis.md
+├── sql/
+│   ├── 01_kpi_queries.sql
+│   ├── 02_inventory_analysis.sql
+│   ├── 03_sales_analysis.sql
+│   ├── 04_pricing_analysis.sql
+│   ├── 05_forecasting_queries.sql
+│   └── 06_advanced_business_queries.sql
+└── README.md
+```
+
+## Screenshots
+
+The gallery below uses the six screenshots already present in the repository.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/Screenshot%28375%29.png" alt="Retail AI project screenshot 375" width="480"><br>
+      <sub>Screenshot 375</sub>
+    </td>
+    <td align="center">
+      <img src="images/Screenshot%28376%29.png" alt="Retail AI project screenshot 376" width="480"><br>
+      <sub>Screenshot 376</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/Screenshot%28377%29.png" alt="Retail AI project screenshot 377" width="480"><br>
+      <sub>Screenshot 377</sub>
+    </td>
+    <td align="center">
+      <img src="images/Screenshot%28378%29.png" alt="Retail AI project screenshot 378" width="480"><br>
+      <sub>Screenshot 378</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/Screenshot%28379%29.png" alt="Retail AI project screenshot 379" width="480"><br>
+      <sub>Screenshot 379</sub>
+    </td>
+    <td align="center">
+      <img src="images/Screenshot%28380%29.png" alt="Retail AI project screenshot 380" width="480"><br>
+      <sub>Screenshot 380</sub>
+    </td>
+  </tr>
+</table>
+
+## Run the Streamlit app
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/sahil2003-ai/retail-ai-intelligence-system.git
+cd retail-ai-intelligence-system
+```
+
+### 2. Create an environment and install dependencies
+
+No dependency lockfile or `requirements.txt` is currently tracked in the repository. With Python installed, create a virtual environment and install the packages imported by the app and notebooks:
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+pip install pandas numpy scikit-learn xgboost joblib streamlit plotly matplotlib seaborn sqlalchemy psycopg2-binary
+```
+
+macOS/Linux:
+
+```bash
+source .venv/bin/activate
+pip install pandas numpy scikit-learn xgboost joblib streamlit plotly matplotlib seaborn sqlalchemy psycopg2-binary
+```
+
+### 3. Start the app
+
+The current app loads model files using paths relative to the `app` directory, so launch it from there:
+
+```bash
+cd app
+streamlit run app.py
+```
+
+The interface contains a single-record prediction form and a CSV bulk-prediction flow with a preview, result table, demand charts, summary values, and CSV download.
+
+> **Prototype caveat:** Before relying on the output, fix and test the training/inference feature mismatch and category-label mismatch described in the ML section. The serialized model files are included for reproducibility of the current experiment, not as proof of deployment-ready predictions.
+
+## Run the notebooks and SQL
+
+### Notebooks
+
+Open the notebooks in Jupyter or VS Code in this order:
+
+1. `notebooks/01_project_setup.ipynb` — project setup
+2. `notebooks/02_data_cleaning_feature_engineering.ipynb` — cleaning, features, and KPI calculations
+3. `notebooks/03_ml_modeling.ipynb` — regression/classification experiments and saved models
+
+The notebooks currently contain local Windows file paths. Update those paths to the cloned repository location (preferably use paths relative to the project root) before running them.
+
+### PostgreSQL and SQL scripts
+
+The SQL files query a table named `retail_inventory`. The cleaning notebook creates/replaces that table when its PostgreSQL upload cell runs. To run the scripts in another environment:
+
+1. Create/configure a PostgreSQL database and import the processed CSV or execute the notebook's table-load step.
+2. Confirm the table contains the processed columns referenced by the queries.
+3. Run the scripts in order: KPI queries, inventory analysis, sales analysis, pricing analysis, forecasting queries, and advanced business queries.
+
+The KPI figures above were recalculated from the processed CSV; they were not produced by a live PostgreSQL execution in this README.
+
+### Power BI
+
+Open `powerbi/AI_Retail_Intelligence_System.pbix` with Power BI Desktop. If Power BI prompts for a data source, update the connection to match your environment and refresh the model. Review the report explanation in `reports/dashboard_explanation.md`.
+
+## Limitations and next steps
+
+- [ ] Remove target-derived features and rerun leakage-safe demand model evaluation.
+- [ ] Define an independently meaningful inventory-risk target and evaluate against that definition.
+- [ ] Match app feature engineering and categorical values to the training pipeline; add tests for single and batch predictions.
+- [ ] Replace machine-specific notebook paths with project-relative paths.
+- [ ] Add a `requirements.txt` or lockfile for reproducible setup.
+- [ ] Move database configuration to environment variables; do not commit real credentials.
+- [ ] Re-run dashboard/SQL metrics from a documented source and reconcile report-level figures.
+- [ ] Document the original dataset source and reuse license.
+- [ ] Add a project license if you intend to permit reuse; no LICENSE file is currently listed in the repository.
+
+## Skills demonstrated
+
+- Data cleaning, validation, and feature engineering with pandas
+- Exploratory data analysis and business KPI development
+- SQL aggregations, CTEs, ranking/window functions, and business queries
+- Regression and classification workflows with scikit-learn/XGBoost
+- Model evaluation and identifying target leakage / label leakage
+- Interactive reporting with Power BI and Streamlit
+- Communicating assumptions, evidence, limitations, and follow-up work
+
+## Author and license
 
 **Sahil Gaikwad**
 
 - GitHub: [sahil2003-ai](https://github.com/sahil2003-ai)
 - LinkedIn: [Sahil Gaikwad](https://www.linkedin.com/in/sahil-gaikwad-a76b7224a/)
 
-## 📄 License
-
-Confirm the repository license and dataset reuse terms before redistribution.
+No repository license file is currently present. Confirm the dataset's provenance and usage terms, and add an appropriate project license before inviting reuse.
